@@ -1,4 +1,4 @@
-local g = import 'grafonnet/grafana.libsonnet';
+local g = import '/home/piyushagarwal/Desktop/ceph_clone/ceph/monitoring/ceph-mixin/grafonnet-lib/grafonnet/grafana.libsonnet';
 local pieChartPanel = import 'piechart_panel.libsonnet';
 local timeSeries = import 'timeseries_panel.libsonnet';
 

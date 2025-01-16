@@ -94,6 +94,7 @@
       },
       overrides: [],
     },
+    seriesOverrides: [],
     options: {
       legend: {
         calcs: [],
@@ -137,5 +138,8 @@
     addThresholds(steps):: std.foldl(function(p, s) p.addThreshold(s), steps, self),
     addCalcs(calcs):: std.foldl(function(p, t) p.addCalc(t), calcs, self),
     addOverrides(overrides):: std.foldl(function(p, o) p.addOverride(o.matcher, o.properties), overrides, self),
+    addSeriesOverride(override):: self {
+      seriesOverrides+: [override],
+    }
   },
 }

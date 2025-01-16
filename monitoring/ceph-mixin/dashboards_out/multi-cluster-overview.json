@@ -22,13 +22,13 @@
    "graphTooltip": 0,
    "hideControls": false,
    "id": null,
-   "links": [ 
+   "links": [
       {
          "asDropdown": true,
          "icon": "external link",
          "includeVars": true,
          "keepTime": true,
-         "tags": [],
+         "tags": [ ],
          "targetBlank": false,
          "title": "Browse Dashboards",
          "tooltip": "",
@@ -1786,6 +1786,7 @@
                   }
                },
                "pluginVersion": "9.1.3",
+               "seriesOverrides": [ ],
                "targets": [
                   {
                      "datasource": "$datasource",
@@ -1876,6 +1877,7 @@
                   }
                },
                "pluginVersion": "9.1.3",
+               "seriesOverrides": [ ],
                "targets": [
                   {
                      "datasource": "$datasource",
@@ -1966,6 +1968,7 @@
                   }
                },
                "pluginVersion": "9.1.3",
+               "seriesOverrides": [ ],
                "targets": [
                   {
                      "datasource": "$datasource",

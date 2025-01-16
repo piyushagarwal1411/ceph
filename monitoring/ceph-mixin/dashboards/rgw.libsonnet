@@ -1,4 +1,4 @@
-local g = import 'grafonnet/grafana.libsonnet';
+local g = import '/home/piyushagarwal/Desktop/ceph_clone/ceph/monitoring/ceph-mixin/grafonnet-lib/grafonnet/grafana.libsonnet';
 
 (import 'utils.libsonnet') {
   'radosgw-sync-overview.json':
