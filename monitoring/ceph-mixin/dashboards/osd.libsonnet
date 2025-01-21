@@ -43,50 +43,48 @@ local g = import 'grafonnet/grafana.libsonnet';
       $.addClusterTemplate()
     )
     .addPanels([
-      $.simpleGraphPanel(
-        { '@95%ile': '#e0752d' },
-        'OSD Read Latencies',
-        '',
-        'ms',
-        null,
-        '0',
-        |||
-          avg (
-            rate(ceph_osd_op_r_latency_sum{%(matchers)s}[$__rate_interval]) /
-              on (ceph_daemon) rate(ceph_osd_op_r_latency_count{%(matchers)s}[$__rate_interval]) * 1000
-          )
-        ||| % $.matchers(),
-        'AVG read',
-        0,
-        0,
-        8,
-        8
+      $.timeSeriesPanel(
+  title='OSD Read Latencies',
+  datasource='$datasource',
+  gridPosition={ x: 0, y: 0, w: 8, h: 8 },
+  unit='ms',
+  drawStyle='line',
+  fillOpacity=8,
+  tooltip={ mode: 'multi', sort: 'none' },
+  colorMode='palette-classic',
+  spanNulls=true,
+)
+.addTargets([
+  $.addTargetSchema(
+    |||
+      avg(
+        rate(ceph_osd_op_r_latency_sum{%(matchers)s}[$__rate_interval]) /
+        on (ceph_daemon) rate(ceph_osd_op_r_latency_count{%(matchers)s}[$__rate_interval]) * 1000
       )
-      .addTargets(
-        [
-          $.addTargetSchema(
-            |||
-              max(
-                rate(ceph_osd_op_r_latency_sum{%(matchers)s}[$__rate_interval]) /
-                on (ceph_daemon) rate(ceph_osd_op_r_latency_count{%(matchers)s}[$__rate_interval]) * 1000
-              )
-            ||| % $.matchers(),
-            'MAX read'
-          ),
-          $.addTargetSchema(
-            |||
-              quantile(0.95,
-                (
-                  rate(ceph_osd_op_r_latency_sum{%(matchers)s}[$__rate_interval]) /
-                    on (ceph_daemon) rate(ceph_osd_op_r_latency_count{%(matchers)s}[$__rate_interval])
-                    * 1000
-                )
-              )
-            ||| % $.matchers(),
-            '@95%ile'
-          ),
-        ],
-      ),
+    ||| % $.matchers(),
+    'AVG read'
+  ),
+  $.addTargetSchema(
+    |||
+      max(
+        rate(ceph_osd_op_r_latency_sum{%(matchers)s}[$__rate_interval]) /
+        on (ceph_daemon) rate(ceph_osd_op_r_latency_count{%(matchers)s}[$__rate_interval]) * 1000
+      )
+    ||| % $.matchers(),
+    'MAX read'
+  ),
+  $.addTargetSchema(
+    |||
+      quantile(0.95,
+        (
+          rate(ceph_osd_op_r_latency_sum{%(matchers)s}[$__rate_interval]) /
+          on (ceph_daemon) rate(ceph_osd_op_r_latency_count{%(matchers)s}[$__rate_interval]) * 1000
+        )
+      )
+    ||| % $.matchers(),
+    '@95%ile'
+  )
+]),
 
       $.addTableExtended(
         datasource='${datasource}',
@@ -170,51 +168,48 @@ local g = import 'grafonnet/grafana.libsonnet';
         )
       ),
 
-      $.simpleGraphPanel(
-        {
-          '@95%ile write': '#e0752d',
-        },
-        'OSD Write Latencies',
-        '',
-        'ms',
-        null,
-        '0',
-        |||
-          avg(
-            rate(ceph_osd_op_w_latency_sum{%(matchers)s}[$__rate_interval]) /
-              on (ceph_daemon) rate(ceph_osd_op_w_latency_count{%(matchers)s}[$__rate_interval])
-              * 1000
-          )
-        ||| % $.matchers(),
-        'AVG write',
-        12,
-        0,
-        8,
-        8
+      $.timeSeriesPanel(
+  title='OSD Write Latencies',
+  datasource='$datasource',
+  gridPosition={ x: 12, y: 0, w: 8, h: 8 },
+  unit='ms',
+  drawStyle='line',
+  fillOpacity=8,
+  tooltip={ mode: 'multi', sort: 'none' },
+  colorMode='palette-classic',
+  spanNulls=true,
+)
+.addTargets([
+  $.addTargetSchema(
+    |||
+      avg(
+        rate(ceph_osd_op_w_latency_sum{%(matchers)s}[$__rate_interval]) /
+        on (ceph_daemon) rate(ceph_osd_op_w_latency_count{%(matchers)s}[$__rate_interval]) * 1000
       )
-      .addTargets(
-        [
-          $.addTargetSchema(
-            |||
-              max(
-                rate(ceph_osd_op_w_latency_sum{%(matchers)s}[$__rate_interval]) /
-                  on (ceph_daemon) rate(ceph_osd_op_w_latency_count{%(matchers)s}[$__rate_interval]) *
-                  1000
-              )
-            ||| % $.matchers(), 'MAX write'
-          ),
-          $.addTargetSchema(
-            |||
-              quantile(0.95, (
-                rate(ceph_osd_op_w_latency_sum{%(matchers)s}[$__rate_interval]) /
-                  on (ceph_daemon) rate(ceph_osd_op_w_latency_count{%(matchers)s}[$__rate_interval]) *
-                  1000
-              ))
-            ||| % $.matchers(), '@95%ile write'
-          ),
-        ],
-      ),
-
+    ||| % $.matchers(),
+    'AVG write'
+  ),
+  $.addTargetSchema(
+    |||
+      max(
+        rate(ceph_osd_op_w_latency_sum{%(matchers)s}[$__rate_interval]) /
+        on (ceph_daemon) rate(ceph_osd_op_w_latency_count{%(matchers)s}[$__rate_interval]) * 1000
+      )
+    ||| % $.matchers(),
+    'MAX write'
+  ),
+  $.addTargetSchema(
+    |||
+      quantile(0.95,
+        (
+          rate(ceph_osd_op_w_latency_sum{%(matchers)s}[$__rate_interval]) /
+          on (ceph_daemon) rate(ceph_osd_op_w_latency_count{%(matchers)s}[$__rate_interval]) * 1000
+        )
+      )
+    ||| % $.matchers(),
+    '@95%ile write'
+  )
+]),
       $.addTableExtended(
         datasource='${datasource}',
         title='Highest WRITE Latencies',
@@ -383,23 +378,27 @@ local g = import 'grafonnet/grafana.libsonnet';
       $.addRowSchema(false,
                      true,
                      'R/W Profile') + { gridPos: { x: 0, y: 16, w: 24, h: 1 } },
-      $.simpleGraphPanel(
-        {},
-        'Read/Write Profile',
-        'Show the read/write workload profile overtime',
-        'short',
-        null,
-        null,
-        'round(sum(rate(ceph_pool_rd{%(matchers)s}[$__rate_interval])))' % $.matchers(),
-        'Reads',
-        0,
-        17,
-        24,
-        8
-      )
-      .addTargets([$.addTargetSchema(
-        'round(sum(rate(ceph_pool_wr{%(matchers)s}[$__rate_interval])))' % $.matchers(), 'Writes'
-      )]),
+      $.timeSeriesPanel(
+  title='Read/Write Profile',
+  datasource='$datasource',
+  gridPosition={ x: 0, y: 17, w: 24, h: 8 },
+  unit='short',
+  drawStyle='line',
+  fillOpacity=8,
+  tooltip={ mode: 'multi', sort: 'none' },
+  colorMode='palette-classic',
+  spanNulls=true,
+)
+.addTargets([
+  $.addTargetSchema(
+    'round(sum(rate(ceph_pool_rd{%(matchers)s}[$__rate_interval])))' % $.matchers(),
+    'Reads'
+  ),
+  $.addTargetSchema(
+    'round(sum(rate(ceph_pool_wr{%(matchers)s}[$__rate_interval])))' % $.matchers(),
+    'Writes'
+  )
+]),
 
       $.addTableExtended(
         datasource='${datasource}',
